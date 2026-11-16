@@ -1,0 +1,13 @@
+{
+  "name": "mind-dealers",
+  "version": "0.1.0",
+  "description": "Protótipo online do jogo de tabuleiro Mind Dealers",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/fuzz.js 300"
+  },
+  "engines": { "node": ">=18" },
+  "license": "UNLICENSED",
+  "private": true
+}
