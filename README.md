@@ -15,6 +15,21 @@ Abra `http://localhost:3000`. Um jogador cria a sala e envia o link/código para
 Para outras pessoas entrarem pela internet, rode o servidor numa máquina acessível (ex.: Render, Railway, Fly.io,
 uma VPS) ou exponha a porta local com um túnel (ex.: `ngrok http 3000`). A porta pode ser trocada com `PORT=8080`.
 
+## Hospedar no Railway
+
+O repositório já vem pronto para o Railway (`railway.json` + `package.json`):
+
+1. Em [railway.com](https://railway.com), crie um projeto com **Deploy from GitHub repo** e escolha `FelpTB/Mind-Dealers-site`.
+2. O Railway detecta o Node 22, roda `node server.js` e usa a porta que ele mesmo define (variável `PORT`). Não há build nem variáveis para configurar.
+3. Em **Settings → Networking**, clique em **Generate Domain** para ganhar um endereço público (ex.: `mind-dealers.up.railway.app`).
+4. Cada `git push` na branch `main` publica uma nova versão automaticamente.
+
+Cuidados:
+
+- As salas ficam na memória do servidor. **Cada nova publicação (ou reinício) apaga as partidas em andamento**, então evite fazer push no meio de um jogo.
+- Mantenha **1 réplica** (já definido em `railway.json`): com mais de uma, jogadores da mesma sala poderiam cair em servidores diferentes.
+- O Railway verifica a saúde do servidor em `/health`.
+
 **Modo teste:** ao criar a sala, marque "Modo teste" para controlar os 4 jogadores no mesmo navegador.
 A opção "seguir decisões" troca de assento sozinha para quem precisa decidir. A semente repete um embaralhamento.
 

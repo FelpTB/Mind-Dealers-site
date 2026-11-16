@@ -67,6 +67,8 @@ const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');
   const p = url.pathname;
 
+  if (p === '/health') return json(res, 200, { ok: true, rooms: rooms.size });
+
   if (req.method === 'POST' && p.startsWith('/api/')) {
     const b = await body(req);
     const name = String(b.name || '').trim().slice(0, 20);
@@ -139,4 +141,13 @@ setInterval(() => {
   for (const [k, r] of rooms) if (r.touched < lim && !r.clients.size) rooms.delete(k);
 }, 3600 * 1000);
 
-server.listen(PORT, () => console.log(`Mind Dealers rodando em http://localhost:${PORT}`));
+server.listen(PORT, '0.0.0.0', () => console.log(`Mind Dealers rodando na porta ${PORT}`));
+
+// Railway envia SIGTERM ao reimplantar: fecha as conexões ao vivo e encerra.
+function shutdown() {
+  for (const r of rooms.values()) for (const c of r.clients) { try { c.res.end(); } catch (e) { /* */ } }
+  server.close(() => process.exit(0));
+  setTimeout(() => process.exit(0), 3000).unref();
+}
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);

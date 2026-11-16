@@ -7,7 +7,7 @@
     "start": "node server.js",
     "test": "node test/fuzz.js 300"
   },
-  "engines": { "node": ">=18" },
+  "engines": { "node": "22.x" },
   "license": "UNLICENSED",
   "private": true
 }
